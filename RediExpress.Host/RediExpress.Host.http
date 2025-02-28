@@ -1,0 +1,6 @@
+@RediExpress.Host_HostAddress = http://localhost:5053
+
+GET {{RediExpress.Host_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
