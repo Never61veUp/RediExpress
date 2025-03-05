@@ -20,11 +20,17 @@ public class UserConfiguration : IEntityTypeConfiguration<UserEntity>
             b.Property(x => x.MiddleName).HasColumnName("MiddleName").IsRequired(false).HasMaxLength(18);
         });
         
-        builder.Property(s => s.Email).HasColumnName("Email")
-            .IsRequired().HasMaxLength(50);
+        builder.ComplexProperty(s => s.Email, b =>
+        {
+            b.IsRequired();
+            b.Property(x => x.EmailAddress).HasColumnName("EmailAddress");
+        });
         
-        builder.Property(s => s.PhoneNumber).HasColumnName("PhoneNumber")
-            .IsRequired().HasMaxLength(11);
+        builder.ComplexProperty(s => s.PhoneNumber, b =>
+        {
+            b.IsRequired();
+            b.Property(x => x.Number).HasColumnName("PhoneNumber");
+        });
         
         builder.Property(s => s.PasswordHash).HasColumnName("Password")
             .IsRequired();

@@ -18,6 +18,7 @@
 
     <ItemGroup>
       <ProjectReference Include="..\RediExpress.Host\RediExpress.Host.csproj" />
+      <ProjectReference Include="..\RediExpress.PostgreSql.MigrationService\RediExpress.PostgreSql.MigrationService.csproj" />
     </ItemGroup>
 
 </Project>
