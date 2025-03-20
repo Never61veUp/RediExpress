@@ -20,6 +20,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RediExpress.PostgreSql", "R
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RediExpress.PostgreSql.MigrationService", "RediExpress.PostgreSql.MigrationService\RediExpress.PostgreSql.MigrationService.csproj", "{63324E41-8580-489C-B562-1F5F6858B38C}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RediExpress.Email", "RediExpress.Email\RediExpress.Email.csproj", "{D65FE46D-A18F-48E9-9C48-5EE3EA3FBB66}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -35,6 +37,7 @@ Global
 		{E73EBC32-F225-4B5D-BEF3-B412FC63026B} = {507056E0-590F-441A-84EF-E676CE26EDC1}
 		{63324E41-8580-489C-B562-1F5F6858B38C} = {507056E0-590F-441A-84EF-E676CE26EDC1}
 		{EE389FA8-4089-4911-BC2A-037744540620} = {AFCDEB30-DD53-470A-9419-27185892AACA}
+		{D65FE46D-A18F-48E9-9C48-5EE3EA3FBB66} = {507056E0-590F-441A-84EF-E676CE26EDC1}
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{459F005A-7A90-4087-B8B0-A3548EA37E8B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -65,5 +68,9 @@ Global
 		{63324E41-8580-489C-B562-1F5F6858B38C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{63324E41-8580-489C-B562-1F5F6858B38C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{63324E41-8580-489C-B562-1F5F6858B38C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D65FE46D-A18F-48E9-9C48-5EE3EA3FBB66}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D65FE46D-A18F-48E9-9C48-5EE3EA3FBB66}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D65FE46D-A18F-48E9-9C48-5EE3EA3FBB66}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D65FE46D-A18F-48E9-9C48-5EE3EA3FBB66}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
