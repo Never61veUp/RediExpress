@@ -2,6 +2,8 @@ using RediExpress.Application.Services;
 using RediExpress.Auth.Abstractions;
 using RediExpress.Auth.Model;
 using RediExpress.Auth.Services;
+using RediExpress.Email.Configuration;
+using RediExpress.Email.Services;
 using RediExpress.Host.Extensions;
 using RediExpress.PostgreSql;
 using RediExpress.PostgreSql.Repositories;
@@ -27,6 +29,13 @@ builder.AddNpgsqlDbContext<RediExpressDbContext>("RediExpressDb", options =>
     options.DisableHealthChecks = true;
     options.DisableTracing = true;
 });
+
+builder.Services.Configure<MailSettings>(
+    builder
+        .Configuration
+        .GetSection(nameof(MailSettings))
+);
+builder.Services.AddTransient<IEmailService, EmailService>();
 
 var opt = configuration.GetSection(nameof(JwtOptions));
 services.Configure<JwtOptions>(configuration.GetSection(nameof(JwtOptions)));

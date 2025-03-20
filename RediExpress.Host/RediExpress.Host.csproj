@@ -20,6 +20,7 @@
 
     <ItemGroup>
       <ProjectReference Include="..\RediExpress.Application\RediExpress.Application.csproj" />
+      <ProjectReference Include="..\RediExpress.Email\RediExpress.Email.csproj" />
       <ProjectReference Include="..\RediExpress.PostgreSql\RediExpress.PostgreSql.csproj" />
     </ItemGroup>
 
