@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using RediExpress.Email.Model;
-using RediExpress.Email.Services;
+using RediExpress.EmailService.Model;
+using RediExpress.EmailService.Services;
 
 namespace RediExpress.Host.Controllers;
 

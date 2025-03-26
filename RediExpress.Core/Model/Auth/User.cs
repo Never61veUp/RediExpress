@@ -8,7 +8,7 @@ public class User : Entity<Guid>, IAggregateRoot
     public FullName FullName { get; }
     public Email Email { get; }
     public PhoneNumber PhoneNumber { get; }
-    public string PasswordHash { get; }
+    public string PasswordHash { get; private set; }
     
     private User(Guid id, FullName fullName, Email email, PhoneNumber phoneNumber, string passwordHash) : base(id)
     {
@@ -31,5 +31,11 @@ public class User : Entity<Guid>, IAggregateRoot
             return Result.Failure<User>("Phone number is already registered");
         
         return new User(id, fullName, email, phoneNumber, passwordHash);
+    }
+
+    public Result ChangePassword(string newPassword)
+    {
+        PasswordHash = newPassword;
+        return Result.Success();
     }
 }

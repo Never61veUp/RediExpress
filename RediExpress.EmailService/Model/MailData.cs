@@ -1,4 +1,4 @@
-﻿namespace RediExpress.Email.Model;
+﻿namespace RediExpress.EmailService.Model;
 
 public class MailData
 {

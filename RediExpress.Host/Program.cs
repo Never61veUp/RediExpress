@@ -2,8 +2,8 @@ using RediExpress.Application.Services;
 using RediExpress.Auth.Abstractions;
 using RediExpress.Auth.Model;
 using RediExpress.Auth.Services;
-using RediExpress.Email.Configuration;
-using RediExpress.Email.Services;
+using RediExpress.EmailService.Configuration;
+using RediExpress.EmailService.Services;
 using RediExpress.Host.Extensions;
 using RediExpress.PostgreSql;
 using RediExpress.PostgreSql.Repositories;
@@ -23,7 +23,9 @@ builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IPasswordHasher, PasswordHasher>();
 builder.Services.AddScoped<IJwtProvider, JwtProvider>();
-
+builder.Services.AddScoped<IEmailService, EmailService>();
+builder.Services.AddScoped<IPasswordResetService, PasswordResetService>();
+builder.Services.AddMemoryCache();
 builder.AddNpgsqlDbContext<RediExpressDbContext>("RediExpressDb", options =>
 {
     options.DisableHealthChecks = true;

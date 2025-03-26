@@ -1,4 +1,4 @@
-﻿namespace RediExpress.Email.Configuration;
+﻿namespace RediExpress.EmailService.Configuration;
 
 public class MailSettings
 {

@@ -55,6 +55,28 @@ public class UserRepository : IUserRepository
     
     public async Task<ICollection<PhoneNumber>> GetPhoneNumbers() => 
         await _context.Users.AsNoTracking().Select(x => x.PhoneNumber).ToListAsync();
+
+    public async Task<Result> UpdateUserAsync(User user)
+    {
+        var userEntity = await _context.Users.FindAsync(user.Id);
+    
+        if (userEntity == null)
+        {
+            return Result.Failure("User not found");
+        }
+        
+        userEntity.Email = user.Email;
+        userEntity.FullName = user.FullName;
+        userEntity.PasswordHash = user.PasswordHash;
+        userEntity.PhoneNumber = user.PhoneNumber;
+
+        var result = await _context.SaveChangesAsync();
+
+        return result > 0 ? 
+            Result.Success() : 
+            Result.Failure("Failed to update user");
+        
+    }
     
     
 }

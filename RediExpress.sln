@@ -20,7 +20,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RediExpress.PostgreSql", "R
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RediExpress.PostgreSql.MigrationService", "RediExpress.PostgreSql.MigrationService\RediExpress.PostgreSql.MigrationService.csproj", "{63324E41-8580-489C-B562-1F5F6858B38C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RediExpress.Email", "RediExpress.Email\RediExpress.Email.csproj", "{D65FE46D-A18F-48E9-9C48-5EE3EA3FBB66}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RediExpress.EmailService", "RediExpress.EmailService\RediExpress.EmailService.csproj", "{D65FE46D-A18F-48E9-9C48-5EE3EA3FBB66}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

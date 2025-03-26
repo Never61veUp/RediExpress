@@ -10,4 +10,5 @@ public interface IUserRepository
     Task<Result<User>> GetUserByEmailAsync(Email email);
     Task<ICollection<Email>> GetEmails();
     Task<ICollection<PhoneNumber>> GetPhoneNumbers();
+    Task<Result> UpdateUserAsync(User user);
 }

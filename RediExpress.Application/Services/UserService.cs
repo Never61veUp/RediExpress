@@ -67,4 +67,18 @@ public class UserService : IUserService
         
         return Result.Success(token);
     }
+
+    public async Task<Result<User>> GetUserByEmail(string email)
+    {
+        var emailAddress = Email.Create(email);
+        if (emailAddress.IsFailure)
+            return Result.Failure<User>(emailAddress.Error);
+        
+        return await _userRepository.GetUserByEmailAsync(emailAddress.Value);
+    }
+
+    public async Task<Result> UpdateUserAsync(User user)
+    {
+        return await _userRepository.UpdateUserAsync(user);
+    }
 }

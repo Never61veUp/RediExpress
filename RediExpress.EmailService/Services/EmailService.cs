@@ -1,11 +1,11 @@
-﻿using MimeKit;
-using MailKit.Net.Smtp;
+﻿using MailKit.Net.Smtp;
 using MailKit.Security;
 using Microsoft.Extensions.Options;
-using RediExpress.Email.Configuration;
-using RediExpress.Email.Model;
+using MimeKit;
+using RediExpress.EmailService.Configuration;
+using RediExpress.EmailService.Model;
 
-namespace RediExpress.Email.Services;
+namespace RediExpress.EmailService.Services;
 
 public class EmailService : IEmailService
 {
@@ -17,7 +17,6 @@ public class EmailService : IEmailService
 
     public async Task<bool> SendAsync(MailData mailData) {
         try {
-            // Initialize a new instance of the MimeKit.MimeMessage class
             var mail = new MimeMessage();
             
             // Sender
@@ -27,22 +26,18 @@ public class EmailService : IEmailService
             // Receiver
             foreach (string mailAddress in mailData.To)
                 mail.To.Add(MailboxAddress.Parse(mailAddress));
-
-            // Set Reply to if specified in mail data
+            
             if(!string.IsNullOrEmpty(mailData.ReplyTo))
                 mail.ReplyTo.Add(new MailboxAddress(mailData.ReplyToName, mailData.ReplyTo));
 
             // BCC
-            // Check if a BCC was supplied in the request
             if (mailData.Bcc != null)
             {
-                // Get only addresses where value is not null or with whitespace. x = value of address
                 foreach (string mailAddress in mailData.Bcc.Where(x => !string.IsNullOrWhiteSpace(x)))
                     mail.Bcc.Add(MailboxAddress.Parse(mailAddress.Trim()));
             }
 
             // CC
-            // Check if a CC address was supplied in the request
             if (mailData.Cc != null)
             {
                 foreach (string mailAddress in mailData.Cc.Where(x => !string.IsNullOrWhiteSpace(x)))
