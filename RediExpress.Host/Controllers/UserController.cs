@@ -26,6 +26,7 @@ public class UserController : BaseController
         
         return FromResult(signUpResult);
     }
+    
     [HttpPost("signIn")]
     public async Task<IActionResult> SignIn([FromBody] SignInRequest signInRequest)
     {

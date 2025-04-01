@@ -15,9 +15,10 @@ var services = builder.Services;
 // Add services to the container.
 
 builder.Services.AddControllers();
+builder.Services.AddOpenApi();
 services.AddEndpointsApiExplorer();
 services.AddSwaggerGen();
-builder.Services.AddOpenApi();
+
 
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
@@ -25,7 +26,11 @@ builder.Services.AddScoped<IPasswordHasher, PasswordHasher>();
 builder.Services.AddScoped<IJwtProvider, JwtProvider>();
 builder.Services.AddScoped<IEmailService, EmailService>();
 builder.Services.AddScoped<IPasswordResetService, PasswordResetService>();
+builder.Services.AddTransient<IEmailService, EmailService>();
+
 builder.Services.AddMemoryCache();
+
+
 builder.AddNpgsqlDbContext<RediExpressDbContext>("RediExpressDb", options =>
 {
     options.DisableHealthChecks = true;
@@ -37,9 +42,7 @@ builder.Services.Configure<MailSettings>(
         .Configuration
         .GetSection(nameof(MailSettings))
 );
-builder.Services.AddTransient<IEmailService, EmailService>();
 
-var opt = configuration.GetSection(nameof(JwtOptions));
 services.Configure<JwtOptions>(configuration.GetSection(nameof(JwtOptions)));
 services.AddApiAuthentication(configuration);
 
