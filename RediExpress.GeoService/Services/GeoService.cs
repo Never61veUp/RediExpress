@@ -1,20 +1,13 @@
 ﻿using System.Text.Json;
-using System.Text.RegularExpressions;
+using CSharpFunctionalExtensions;
 using RediExpress.GeoService.Extensions;
 using RediExpress.GeoService.Model;
 
-namespace RediExpress.Application.Services;
+namespace RediExpress.GeoService.Services;
 
-public class GeoService : IGeoService
+public class GeoService(HttpClient httpClient) : IGeoService
 {
-    private readonly HttpClient _httpClient;
-
-    public GeoService(HttpClient httpClient)
-    {
-        _httpClient = httpClient;
-    }
-
-    public async Task<double> GetDistance(string point1, string point2)
+    public async Task<Result<double>> GetDistance(string point1, string point2)
     {
         var geo1 = await GetExternalDataAsync(point1);
         var geo2 = await GetExternalDataAsync(point2);
@@ -25,9 +18,11 @@ public class GeoService : IGeoService
         return result;
     }
 
-    public async Task<string> GetExternalDataAsync(string parameter)
+    private async Task<string> GetExternalDataAsync(string parameter)
     {
-        var response = await _httpClient.GetAsync($"https://geocode-maps.yandex.ru/v1/?apikey=57ab92b0-665a-48e2-89b8-bed586766afa&geocode={parameter}&format=json\n");
+        var response =
+            await httpClient.GetAsync(
+                $"https://geocode-maps.yandex.ru/v1/?apikey=57ab92b0-665a-48e2-89b8-bed586766afa&geocode={parameter}&format=json\n");
         response.EnsureSuccessStatusCode();
         var responseData = await response.Content.ReadAsStringAsync();
         using var doc = JsonDocument.Parse(responseData);

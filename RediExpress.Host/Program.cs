@@ -4,6 +4,7 @@ using RediExpress.Auth.Model;
 using RediExpress.Auth.Services;
 using RediExpress.EmailService.Configuration;
 using RediExpress.EmailService.Services;
+using RediExpress.GeoService.Services;
 using RediExpress.Host.Extensions;
 using RediExpress.PostgreSql;
 using RediExpress.PostgreSql.Repositories;

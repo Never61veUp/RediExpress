@@ -17,8 +17,8 @@ public class GeoPoint
         if (parts.Length != 2)
             throw new ArgumentException("Invalid POS format. Expected 'longitude latitude'");
 
-        double longitude = double.Parse(parts[0], System.Globalization.CultureInfo.InvariantCulture);
-        double latitude = double.Parse(parts[1], System.Globalization.CultureInfo.InvariantCulture);
+        var longitude = double.Parse(parts[0], System.Globalization.CultureInfo.InvariantCulture);
+        var latitude = double.Parse(parts[1], System.Globalization.CultureInfo.InvariantCulture);
 
         return new GeoPoint(latitude, longitude);
     }
