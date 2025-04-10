@@ -27,6 +27,8 @@ builder.Services.AddScoped<IJwtProvider, JwtProvider>();
 builder.Services.AddScoped<IEmailService, EmailService>();
 builder.Services.AddScoped<IPasswordResetService, PasswordResetService>();
 builder.Services.AddTransient<IEmailService, EmailService>();
+builder.Services.AddScoped<IGeoService, GeoService>();
+builder.Services.AddHttpClient<HttpMessageInvoker, HttpClient>();
 
 builder.Services.AddMemoryCache();
 
