@@ -13,6 +13,7 @@
     <ItemGroup>
       <ProjectReference Include="..\RediExpress.Auth\RediExpress.Auth.csproj" />
       <ProjectReference Include="..\RediExpress.EmailService\RediExpress.EmailService.csproj" />
+      <ProjectReference Include="..\RediExpress.GeoService\RediExpress.GeoService.csproj" />
       <ProjectReference Include="..\RediExpress.PostgreSql\RediExpress.PostgreSql.csproj" />
     </ItemGroup>
 
