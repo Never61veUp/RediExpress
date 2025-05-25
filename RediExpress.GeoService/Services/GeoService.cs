@@ -9,8 +9,8 @@ public class GeoService(HttpClient httpClient) : IGeoService
 {
     public async Task<Result<double>> GetDistance(string point1, string point2)
     {
-        var geo1 = await GetExternalDataAsync(point1);
-        var geo2 = await GetExternalDataAsync(point2);
+        var geo1 = await GetCoordinatesAsync(point1);
+        var geo2 = await GetCoordinatesAsync(point2);
         var geoPoint1 = GeoPoint.FromPosString(geo1);
         var geoPoint2 = GeoPoint.FromPosString(geo2);
 
@@ -18,7 +18,7 @@ public class GeoService(HttpClient httpClient) : IGeoService
         return result;
     }
 
-    private async Task<string> GetExternalDataAsync(string parameter)
+    public async Task<string> GetCoordinatesAsync(string parameter)
     {
         var response =
             await httpClient.GetAsync(
@@ -48,5 +48,27 @@ public class GeoService(HttpClient httpClient) : IGeoService
             }
         }
         return null;
+    }
+    public async Task<string> GetFormattedAddressAsync(string parameter)
+    {
+        var response = await httpClient.GetAsync(
+            $"https://geocode-maps.yandex.ru/v1/?apikey=57ab92b0-665a-48e2-89b8-bed586766afa&geocode={parameter}&format=json");
+
+        response.EnsureSuccessStatusCode();
+        var responseData = await response.Content.ReadAsStringAsync();
+
+        using var doc = JsonDocument.Parse(responseData);
+
+        var address = doc.RootElement
+            .GetProperty("response")
+            .GetProperty("GeoObjectCollection")
+            .GetProperty("featureMember")[0]
+            .GetProperty("GeoObject")
+            .GetProperty("metaDataProperty")
+            .GetProperty("GeocoderMetaData")
+            .GetProperty("text")
+            .GetString();
+
+        return address;
     }
 }
