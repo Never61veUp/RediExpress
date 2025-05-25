@@ -20,7 +20,7 @@ builder.Services.AddOpenApi();
 services.AddEndpointsApiExplorer();
 services.AddSwaggerGen();
 
-
+builder.Services.AddDistributedMemoryCache();
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IPasswordHasher, PasswordHasher>();
@@ -30,6 +30,7 @@ builder.Services.AddScoped<IPasswordResetService, PasswordResetService>();
 builder.Services.AddTransient<IEmailService, EmailService>();
 builder.Services.AddScoped<IGeoService, GeoService>();
 builder.Services.AddHttpClient<HttpMessageInvoker, HttpClient>();
+builder.Services.AddScoped<IOrderService, OrderService>();
 
 builder.Services.AddMemoryCache();
 

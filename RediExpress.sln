@@ -28,6 +28,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{175BC1A9-A
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestProject", "TestProject\TestProject.csproj", "{BC067AB7-4022-4AA4-8CC7-029C22310980}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RediExpress.WeatherService", "RediExpress.WeatherService\RediExpress.WeatherService.csproj", "{6A836602-374D-42C8-9705-66E65CEB6F45}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -46,6 +48,7 @@ Global
 		{D65FE46D-A18F-48E9-9C48-5EE3EA3FBB66} = {507056E0-590F-441A-84EF-E676CE26EDC1}
 		{4602B30E-8EE6-429A-994D-01A34D21DD71} = {507056E0-590F-441A-84EF-E676CE26EDC1}
 		{BC067AB7-4022-4AA4-8CC7-029C22310980} = {175BC1A9-A476-406F-AB4D-5C23E2FB8375}
+		{6A836602-374D-42C8-9705-66E65CEB6F45} = {507056E0-590F-441A-84EF-E676CE26EDC1}
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{459F005A-7A90-4087-B8B0-A3548EA37E8B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -88,5 +91,9 @@ Global
 		{BC067AB7-4022-4AA4-8CC7-029C22310980}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BC067AB7-4022-4AA4-8CC7-029C22310980}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BC067AB7-4022-4AA4-8CC7-029C22310980}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6A836602-374D-42C8-9705-66E65CEB6F45}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6A836602-374D-42C8-9705-66E65CEB6F45}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6A836602-374D-42C8-9705-66E65CEB6F45}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6A836602-374D-42C8-9705-66E65CEB6F45}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
