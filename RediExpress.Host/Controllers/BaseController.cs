@@ -21,8 +21,12 @@ public class BaseController : Controller
         return BadRequest(Envelope.Error(errorMessage));
     }
 
+    protected IActionResult FromResult<T>(Result<T> result)
+    {
+        return result.IsSuccess ? Ok(result.Value) : Error(result.Error);
+    }
     protected IActionResult FromResult(Result result)
     {
-        return result.IsSuccess ? Ok(result.ToString()) : Error(result.Error);
+        return result.IsSuccess ? Ok() : Error(result.Error);
     }
 }
