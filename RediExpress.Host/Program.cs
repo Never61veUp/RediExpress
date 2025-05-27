@@ -32,8 +32,10 @@ builder.Services.AddScoped<IGeoService, GeoService>();
 builder.Services.AddHttpClient<HttpMessageInvoker, HttpClient>();
 builder.Services.AddScoped<IOrderService, OrderService>();
 
-builder.Services.AddMemoryCache();
-
+builder.AddRedisClient(connectionName: "cache");
+builder.AddKeyedRedisClient(name: "orders");
+builder.AddKeyedRedisClient(name: "password-reset");
+builder.AddKeyedRedisClient(name: "chat");
 
 builder.AddNpgsqlDbContext<RediExpressDbContext>("RediExpressDb", options =>
 {

@@ -1,19 +1,21 @@
 ﻿using System.Text.Json;
 using CSharpFunctionalExtensions;
 using Microsoft.Extensions.Caching.Distributed;
-using RediExpress.Core.Model;
+using Microsoft.Extensions.DependencyInjection;
 using RediExpress.GeoService.Extensions;
 using RediExpress.WeatherService.Services;
+using StackExchange.Redis;
+using Order = RediExpress.Core.Model.Order;
 
 namespace RediExpress.Application.Services;
 
 public sealed class OrderService : IOrderService
 {
-    private readonly IDistributedCache _cache;
+    private readonly IDatabase _redis;
 
-    public OrderService(IDistributedCache cache)
+    public OrderService([FromKeyedServices("orders")] IConnectionMultiplexer redis)
     {
-        _cache = cache;
+        _redis = redis.GetDatabase();
     }
 
     public async Task<Result<Order>> CreateOrder(Guid userId, Order order, CancellationToken cancellationToken = default)
@@ -28,20 +30,17 @@ public sealed class OrderService : IOrderService
         await JsonSerializer.SerializeAsync(stream, order, cancellationToken: cancellationToken);
         var bytes = stream.ToArray();
         
-        var options = new DistributedCacheEntryOptions
-        {
-            AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(120)
-        };
-        
-        await _cache.SetAsync(userId.ToString(), bytes, options, cancellationToken);
-        
+        var setResult = await _redis.StringSetAsync(userId.ToString(), bytes, expiry: TimeSpan.FromMinutes(120));
+        if(!setResult)
+            return Result.Failure<Order>("Failed to create order");
+                
         return Result.Success(order);
     }
 
     public async Task<Result<Order>> ConfirmOrder(Guid userId, CancellationToken cancellationToken = default)
     {
-        var bytes = await _cache.GetAsync(userId.ToString(), cancellationToken);
-        if (bytes is null)
+        var bytes = await _redis.StringGetAsync(userId.ToString());
+        if (bytes.IsNullOrEmpty)
         {
             return Result.Failure<Order>($"You are trying to confirm an order that doesn't exist.");
         }
@@ -55,11 +54,10 @@ public sealed class OrderService : IOrderService
 
     public async Task<Result<Order>> GetOrder(Guid userId, CancellationToken cancellationToken = default)
     {
-        var bytes = await _cache.GetAsync(userId.ToString(), cancellationToken);
-        if (bytes is null)
+        var bytes = await _redis.StringGetAsync(userId.ToString());
+        if (bytes.IsNullOrEmpty)
         {
             return Result.Failure<Order>($"You are trying to get an order that doesn't exist.");
-            
         }
         using var stream = new MemoryStream(bytes);
         var order = await JsonSerializer.DeserializeAsync<Order>(stream, cancellationToken: cancellationToken);

@@ -9,9 +9,31 @@ var migrations = builder.AddProject<Projects.RediExpress_PostgreSql_MigrationSer
     .WithReference(postgres)
     .WaitFor(postgres);
 
+var cache = builder.AddRedis("cache")
+    .WithRedisInsight()
+    .WithDataVolume(isReadOnly: false);
+
+var ordersRedis = builder.AddRedis("orders")
+    .WithDataVolume();
+
+var passwordResetRedis = builder.AddRedis("password-reset")
+    .WithDataVolume();
+
+var chatRedis = builder.AddRedis("chat")
+    .WithDataVolume();
+
+
 builder.AddProject<Projects.RediExpress_Host>("host")
     .WithReference(postgres)
+    .WithReference(cache)
+    .WithReference(ordersRedis)
+    .WithReference(passwordResetRedis)
+    .WithReference(chatRedis)
     .WaitFor(postgres)
-    .WaitFor(migrations);
+    .WaitFor(cache)
+    .WaitFor(migrations)
+    .WaitFor(ordersRedis)
+    .WaitFor(passwordResetRedis)
+    .WaitFor(chatRedis);
 
 builder.Build().Run();

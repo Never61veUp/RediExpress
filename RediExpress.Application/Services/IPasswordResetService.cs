@@ -3,5 +3,5 @@
 public interface IPasswordResetService
 {
     Task<bool> SendResetCodeAsync(string email);
-    bool ValidateResetCode(string email, string code);
+    Task<bool> ValidateResetCode(string email, string code);
 }

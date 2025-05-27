@@ -38,8 +38,8 @@ public class PasswordResetController : ControllerBase
         var user = await _userService.GetUserByEmail(request.Email);
         if(user.IsFailure)
             return BadRequest(user.Error);
-
-        if (!_passwordResetService.ValidateResetCode(request.Email, request.Code))
+        var validateResult = await _passwordResetService.ValidateResetCode(request.Email, request.Code);
+        if (!validateResult)
             return BadRequest("Code is invalid");
 
         var password = _passwordHasher.GenerateHash(request.NewPassword);
