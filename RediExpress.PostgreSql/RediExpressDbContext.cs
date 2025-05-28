@@ -15,6 +15,7 @@ public class RediExpressDbContext(DbContextOptions<RediExpressDbContext> options
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.ApplyConfiguration(new UserConfiguration());
+        modelBuilder.ApplyConfiguration(new OrderConfiguration());
         
         base.OnModelCreating(modelBuilder);
     }
