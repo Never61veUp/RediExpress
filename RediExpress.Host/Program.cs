@@ -8,6 +8,7 @@ using RediExpress.GeoService.Services;
 using RediExpress.Host.Extensions;
 using RediExpress.PostgreSql;
 using RediExpress.PostgreSql.Repositories;
+using RediExpress.Redis.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 var configuration = builder.Configuration;
@@ -31,6 +32,7 @@ builder.Services.AddTransient<IEmailService, EmailService>();
 builder.Services.AddScoped<IGeoService, GeoService>();
 builder.Services.AddHttpClient<HttpMessageInvoker, HttpClient>();
 builder.Services.AddScoped<IOrderService, OrderService>();
+builder.Services.AddScoped<IOrderRedisService, OrderRedisService>();
 
 builder.AddRedisClient(connectionName: "cache");
 builder.AddKeyedRedisClient(name: "orders");

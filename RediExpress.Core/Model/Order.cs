@@ -8,7 +8,7 @@ public enum PackageStatus
     Pending = 0,
     Shipped = 1,
 }
-public sealed class Order
+public sealed class Order : Entity<Guid>
 {
     public OrderGeo OriginDetails { get; private set; }
     public OrderGeo DestinationDetails { get; private set; }
@@ -18,18 +18,19 @@ public sealed class Order
     public double DeliveryCharges { get; private set;}
     public double TotalCharges => DeliveryCharges + ServiceCharges;
     
-    private Order(Package package, OrderGeo originDetails, OrderGeo destinationDetails)
+    private Order(Guid id, Package package, OrderGeo originDetails, OrderGeo destinationDetails)
     {
+        Id = id;
         Package = package;
         OriginDetails = originDetails;
         DestinationDetails = destinationDetails;
         Status = PackageStatus.Pending;
     }
 
-    public static Result<Order> Create(Package package, OrderGeo originDetails, OrderGeo destinationDetails)
+    public static Result<Order> Create(Guid id, Package package, OrderGeo originDetails, OrderGeo destinationDetails)
     {
         //TODO: validation
-        return new Order(package, originDetails, destinationDetails);
+        return new Order(id, package, originDetails, destinationDetails);
     }
 
     public Result ConfirmOrder()

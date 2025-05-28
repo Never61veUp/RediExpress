@@ -43,7 +43,7 @@ public sealed class OrderController : BaseController
         if (destinationDetails.IsFailure)
             return FromResult(destinationDetails);
         
-        var order = Order.Create(package.Value, originDetails.Value, destinationDetails.Value);
+        var order = Order.Create(Guid.NewGuid(), package.Value, originDetails.Value, destinationDetails.Value);
         if (order.IsFailure)
             return FromResult(order);
         
@@ -56,6 +56,13 @@ public sealed class OrderController : BaseController
     {
         TryGetUserId(out var userId);
         var order = await _orderService.GetOrder(userId, cancellationToken);
+        return FromResult(order);
+    }
+    [HttpPost]
+    public async Task<IActionResult> ConfirmOrder(CancellationToken cancellationToken = default)
+    {
+        TryGetUserId(out var userId);
+        var order = await _orderService.ConfirmOrder(userId, cancellationToken);
         return FromResult(order);
     }
     private bool TryGetUserId(out Guid id)

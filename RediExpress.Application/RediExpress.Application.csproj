@@ -16,6 +16,7 @@
       <ProjectReference Include="..\RediExpress.EmailService\RediExpress.EmailService.csproj" />
       <ProjectReference Include="..\RediExpress.GeoService\RediExpress.GeoService.csproj" />
       <ProjectReference Include="..\RediExpress.PostgreSql\RediExpress.PostgreSql.csproj" />
+      <ProjectReference Include="..\RediExpress.Redis\RediExpress.Redis.csproj" />
       <ProjectReference Include="..\RediExpress.WeatherService\RediExpress.WeatherService.csproj" />
     </ItemGroup>
 
