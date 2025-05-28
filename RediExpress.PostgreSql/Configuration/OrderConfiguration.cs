@@ -24,7 +24,6 @@ public sealed class OrderConfiguration : IEntityTypeConfiguration<OrderEntity>
         builder.Property(o => o.Status)
             .HasConversion<string>();
         
-        builder.Property(o => o.DeliveryCharges);
         builder.Property(o => o.CreatedTime);
         builder.ComplexProperty(o => o.OriginDetails, od =>
         {

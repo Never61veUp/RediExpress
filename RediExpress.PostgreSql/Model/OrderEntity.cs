@@ -10,9 +10,7 @@ public sealed class OrderEntity(Guid id) : Entity<Guid>(id)
     public OrderGeoEntity OriginDetails { get; set; }
     public OrderGeoEntity DestinationDetails { get; set; }
     public PackageStatus Status { get; set; }
-    private const double ServiceCharges = 300;
-    public double DeliveryCharges { get; set;}
-    public double TotalCharges => DeliveryCharges + ServiceCharges;
+    public double TotalCharges { get; set; }
     public DateTime CreatedTime { get; set; }
 }
 public sealed class PackageEntity
@@ -23,9 +21,9 @@ public sealed class PackageEntity
 }
 public sealed class OrderGeoEntity
 {
-    public GeoPointEntity GeoPoint { get; }
-    public string Address { get; }
-    public PhoneNumber PhoneNumber { get; }
+    public GeoPointEntity GeoPoint { get; set; }
+    public string Address { get; set; }
+    public PhoneNumber PhoneNumber { get; set; }
 }
 public sealed class GeoPointEntity
 {
