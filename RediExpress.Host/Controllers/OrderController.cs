@@ -20,9 +20,11 @@ public sealed class OrderController : BaseController
         _geoService = geoService;
     }
 
-    [HttpPost]
+    [HttpPost("CreateOrder")]
     public async Task<IActionResult> CreateOrder(CreateOrderRequest createOrderRequest, CancellationToken cancellationToken)
     {
+        TryGetUserId(out var userId);
+        
         var package = Package.Create(createOrderRequest.PackageItems, createOrderRequest.WeightOfItems, createOrderRequest.WorthOfItems);
         if(package.IsFailure)
             return FromResult(package);
@@ -43,27 +45,36 @@ public sealed class OrderController : BaseController
         if (destinationDetails.IsFailure)
             return FromResult(destinationDetails);
         
-        var order = Order.Create(Guid.NewGuid(), package.Value, originDetails.Value, destinationDetails.Value);
+        var order = Order.Create(Guid.NewGuid(), package.Value, originDetails.Value, destinationDetails.Value, userId);
         if (order.IsFailure)
             return FromResult(order);
         
-        TryGetUserId(out var userId);
+        
         var result = await _orderService.CreateOrder(userId, order.Value, cancellationToken);
         return FromResult(result);
     }
     [HttpGet]
-    public async Task<IActionResult> GetOrder(CancellationToken cancellationToken = default)
+    public async Task<IActionResult> GetOrder(CancellationToken cancellationToken)
     {
         TryGetUserId(out var userId);
         var order = await _orderService.GetOrder(userId, cancellationToken);
         return FromResult(order);
     }
-    [HttpPost]
-    public async Task<IActionResult> ConfirmOrder(CancellationToken cancellationToken = default)
+    [HttpPost("ConfirmOrder")]
+    public async Task<IActionResult> ConfirmOrder(CancellationToken cancellationToken)
     {
         TryGetUserId(out var userId);
         var order = await _orderService.ConfirmOrder(userId, cancellationToken);
         return FromResult(order);
+    }
+
+    [HttpGet("GetOrders")]
+    public async Task<IActionResult> GetOrders(CancellationToken cancellationToken)
+    {
+        TryGetUserId(out var userId);
+        
+        var orders = await _orderService.GetOrders(userId, cancellationToken);
+        return FromResult(orders);
     }
     private bool TryGetUserId(out Guid id)
     {

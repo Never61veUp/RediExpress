@@ -23,6 +23,7 @@ public sealed class OrderDto
 
     public double DeliveryCharges { get; set; }
     public double TotalCharges { get; set; }
+    public Guid UserId { get; set; }
     public static OrderDto FromDomain(Order order)
     {
         return new OrderDto
@@ -45,7 +46,8 @@ public sealed class OrderDto
             WorthOfItems = order.Package.WorthOfItems,
 
             DeliveryCharges = order.DeliveryCharges,
-            TotalCharges = order.TotalCharges
+            TotalCharges = order.TotalCharges,
+            UserId = order.UserId,
         };
     }
 }

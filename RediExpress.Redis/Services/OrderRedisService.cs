@@ -72,7 +72,8 @@ public sealed class OrderRedisService : IOrderRedisService
             dto.Id,
             package.Value,
             originGeo.Value,
-            destinationGeo.Value
+            destinationGeo.Value,
+            dto.UserId
         );
         if(order.IsFailure)
             return Result.Failure<Order>($"Failed to create order");

@@ -58,5 +58,9 @@ public sealed class OrderConfiguration : IEntityTypeConfiguration<OrderEntity>
                 gp.Property(p => p.Longitude).HasColumnName("DestinationLongitude");
             });
         });
+        builder.HasOne(o => o.User)
+            .WithMany()
+            .HasForeignKey(o => o.UserId)
+            .OnDelete(DeleteBehavior.Cascade);
     }
 }

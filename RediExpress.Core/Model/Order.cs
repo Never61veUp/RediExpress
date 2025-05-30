@@ -17,20 +17,22 @@ public sealed class Order : Entity<Guid>
     private const double ServiceCharges = 300;
     public double DeliveryCharges { get; private set;}
     public double TotalCharges => DeliveryCharges + ServiceCharges;
+    public Guid UserId { get; private set; }
     
-    private Order(Guid id, Package package, OrderGeo originDetails, OrderGeo destinationDetails)
+    private Order(Guid id, Package package, OrderGeo originDetails, OrderGeo destinationDetails, Guid userId)
     {
         Id = id;
         Package = package;
         OriginDetails = originDetails;
         DestinationDetails = destinationDetails;
         Status = PackageStatus.Pending;
+        UserId = userId;
     }
 
-    public static Result<Order> Create(Guid id, Package package, OrderGeo originDetails, OrderGeo destinationDetails)
+    public static Result<Order> Create(Guid id, Package package, OrderGeo originDetails, OrderGeo destinationDetails, Guid userId)
     {
         //TODO: validation
-        return new Order(id, package, originDetails, destinationDetails);
+        return new Order(id, package, originDetails, destinationDetails, userId);
     }
 
     public Result ConfirmOrder()

@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("RediExpress.WeatherService")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+9a13edb67afc6b24205f729c452108f9a3c5fe2c")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+c1eb2989806f74767cac7619ff7fcdb8b88658ee")]
 [assembly: System.Reflection.AssemblyProductAttribute("RediExpress.WeatherService")]
 [assembly: System.Reflection.AssemblyTitleAttribute("RediExpress.WeatherService")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

@@ -12,6 +12,8 @@ public sealed class OrderEntity(Guid id) : Entity<Guid>(id)
     public PackageStatus Status { get; set; }
     public double TotalCharges { get; set; }
     public DateTime CreatedTime { get; set; }
+    public Guid UserId { get; set; }   
+    public UserEntity User { get; set; }
 }
 public sealed class PackageEntity
 {

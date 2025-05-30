@@ -11,6 +11,7 @@ public class RediExpressDbContext(DbContextOptions<RediExpressDbContext> options
     : DbContext(options)
 {
     public DbSet<UserEntity> Users { get; set; }
+    public DbSet<OrderEntity> Orders { get; set; }
     
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
