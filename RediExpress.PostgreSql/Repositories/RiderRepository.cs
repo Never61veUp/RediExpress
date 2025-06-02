@@ -11,6 +11,8 @@ public interface IRiderRepository
     Task<Result> UpdateRiderAsync(Rider rider, CancellationToken token = default);
     Task<Result<IEnumerable<Rider>>> GetRidersAsync(CancellationToken token = default);
     Task<Result<Rider>> GetRiderByIdAsync(Guid userId, CancellationToken token = default);
+    Task<Result<Rider>> GetRiderWithReviewsByIdAsync(Guid userId, CancellationToken token = default);
+    Task<Result> UpdateRiderReviewAsync(Rider rider, CancellationToken token = default);
 }
 
 public sealed class RiderRepository : IRiderRepository
@@ -60,12 +62,33 @@ public sealed class RiderRepository : IRiderRepository
             riderEntity.Reviews.Add(Review.Create(
                 review.Comment,
                 review.Rating,
-                review.AuthorUserId
+                review.AuthorUserId,
+                review.CreatedAt
             ).Value);
         }
         
         _context.Riders.Update(riderEntity);
         
+        return await _context.SaveChangesAsync(token) > 0
+            ? Result.Success()
+            : Result.Failure("Failed to update Rider");
+    }
+    public async Task<Result> UpdateRiderReviewAsync(Rider rider, CancellationToken token = default)
+    {
+        var riderEntity = await _context.Riders
+            .Include(r => r.Reviews) // ← Обязательно
+            .FirstOrDefaultAsync(r => r.UserId == rider.UserId, cancellationToken: token);
+
+        if (riderEntity is null)
+            return Result.Failure("Rider not found");  
+
+        var newReviews = rider.Reviews.Except(riderEntity.Reviews).ToList();
+
+        foreach (var review in newReviews)
+        {
+            riderEntity.Reviews.Add(review);
+        }
+
         return await _context.SaveChangesAsync(token) > 0
             ? Result.Success()
             : Result.Failure("Failed to update Rider");
@@ -88,6 +111,22 @@ public sealed class RiderRepository : IRiderRepository
             return Result.Failure<Rider>("Rider not found");
         
         var rider = Rider.Create(riderEntity.UserId, riderEntity.Rating, riderEntity.RatingCount);
+        if(rider.IsFailure)
+            return Result.Failure<Rider>(rider.Error);
+        
+        return Result.Success<Rider>(rider.Value);
+    }
+    
+    public async Task<Result<Rider>> GetRiderWithReviewsByIdAsync(Guid userId, CancellationToken token = default)
+    {
+        var riderEntity = await _context.Riders
+            .Include(r => r.Reviews)
+            .Include(r => r.User)
+            .FirstOrDefaultAsync(r => r.UserId == userId, cancellationToken: token);
+        if (riderEntity is null)
+            throw new KeyNotFoundException("Rider not found");
+        
+        var rider = Rider.Create(riderEntity.UserId, riderEntity.Rating, riderEntity.RatingCount, riderEntity.Reviews);
         if(rider.IsFailure)
             return Result.Failure<Rider>(rider.Error);
         

@@ -1,9 +1,13 @@
 var builder = DistributedApplication.CreateBuilder(args);
 
 var postgres = builder.AddPostgres("postgres")
-    .WithPgAdmin()
+    .WithPgAdmin(configureContainer: containerBuilder =>
+    {
+        containerBuilder.WithHostPort(60037);
+    })
     .WithDataVolume(isReadOnly: false)
     .AddDatabase("RediExpressDb");
+
 
 var migrations = builder.AddProject<Projects.RediExpress_PostgreSql_MigrationService>("migrations")
     .WithReference(postgres)

@@ -59,4 +59,10 @@ public sealed class RiderController : BaseController
         TryGetUserId(out var userId);
         return FromResult(await _riderService.AddReviewAsync(riderId, comment, rating, userId, token));
     }
+    [HttpGet("get-rider-with-review")]
+    public async Task<IActionResult> GetRiderWithReviewsByIdAsync(Guid riderId, CancellationToken token = default)
+    {
+        TryGetUserId(out var userId);
+        return FromResult(await _riderService.GetRiderWithReviewsByIdAsync(riderId, token));
+    }
 }

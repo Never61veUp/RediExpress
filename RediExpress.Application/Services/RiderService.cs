@@ -82,11 +82,16 @@ public sealed class RiderService : IRiderService
 
     public async Task<Result> AddReviewAsync(Guid riderId, string comment, int rating, Guid authorUserId, CancellationToken token = default)
     {
-        var rider = await GetRiderAsync(riderId, token);
+        var rider = await GetRiderWithReviewsByIdAsync(riderId, token);
         if(rider.IsFailure)
             return Result.Failure(rider.Error);
         
-        rider.Value.AddReview(comment, rating, authorUserId);
-        return await _riderRepository.UpdateRiderAsync(rider.Value, token);
+        rider.Value.AddReview(comment, rating, authorUserId, DateTime.UtcNow);
+        return await _riderRepository.UpdateRiderReviewAsync(rider.Value, token);
+    }
+
+    public async Task<Result<Rider>> GetRiderWithReviewsByIdAsync(Guid riderId,  CancellationToken token = default)
+    {
+        return await _riderRepository.GetRiderWithReviewsByIdAsync(riderId, token);
     }
 }

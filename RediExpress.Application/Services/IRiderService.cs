@@ -15,4 +15,5 @@ public interface IRiderService
     Task<Result<IEnumerable<RidersResponse>>> GetRidersWithFullNameAsync(CancellationToken token = default);
     Task<Result> AddReviewAsync(Guid riderId, string comment, int rating, Guid authorUserId,
         CancellationToken token = default);
+    Task<Result<Rider>> GetRiderWithReviewsByIdAsync(Guid riderId, CancellationToken token = default);
 }

@@ -9,18 +9,19 @@ public sealed class Rider
     public float Rating { get; private set; }
     public int RatingCount { get; private set; }
     public Guid UserId { get; }
-    private readonly List<Review> _reviews = [];
+    private readonly List<Review> _reviews;
     public IReadOnlyCollection<Review> Reviews => _reviews.AsReadOnly();
-    private Rider(Guid userId, float rating, int ratingCount) 
+    private Rider(Guid userId, float rating, int ratingCount, List<Review> reviews) 
     {
         UserId = userId;
         Rating = rating;
         RatingCount = ratingCount;
+        _reviews = reviews ?? new List<Review>();
     }
 
-    public static Result<Rider> Create(Guid userId, float rating, int ratingCount)
+    public static Result<Rider> Create(Guid userId, float rating, int ratingCount, List<Review>? reviews = null)
     {
-        return new Rider(userId, rating, ratingCount);
+        return new Rider(userId, rating, ratingCount, reviews);
     }
 
     public Result SetRating(int rating)
@@ -33,15 +34,11 @@ public sealed class Rider
         return Result.Success();
     }
     
-    public Result<Review> AddReview(string comment, int rating, Guid authorUserId)
+    public Result<Review> AddReview(string comment, int rating, Guid authorUserId, DateTime createdAt)
     {
-        if (rating is < 1 or > 5)
-            return Result.Failure<Review>("Rating must be between 1 and 5.");
+        SetRating(rating);
 
-        Rating = (Rating * RatingCount + rating) / (RatingCount + 1);
-        RatingCount++;
-
-        var review = Review.Create(comment, rating, authorUserId);
+        var review = Review.Create(comment, rating, authorUserId, createdAt);
         if(review.IsFailure)
             return Result.Failure<Review>(review.Error);
         
