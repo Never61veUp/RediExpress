@@ -77,6 +77,40 @@ public class UserRepository : IUserRepository
             Result.Failure("Failed to update user");
         
     }
+
+    public async Task<Result<bool>> TryCheckUserById(Guid userId, CancellationToken cancellationToken) => 
+        await _context.Users.AnyAsync(u => u.Id == userId, cancellationToken: cancellationToken);
+    
+    public async Task<Result<User>> GetUserByIdAsync(Guid userId, CancellationToken cancellationToken = default)
+    {
+        var userEntity = await _context.Users
+            .SingleOrDefaultAsync(u => u.Id == userId, cancellationToken: cancellationToken);
+        if(userEntity == null)
+            return Result.Failure<User>($"User with email {userId} does not exist");
+
+        var user = User.Create(
+            userEntity.Id,
+            userEntity.FullName,
+            userEntity.Email,
+            userEntity.PhoneNumber,
+            userEntity.PasswordHash
+        );
+        if(user.IsFailure)
+            return Result.Failure<User>(user.Error);
+        return Result.Success(user.Value);
+    }
+
+    public async Task<Result<IEnumerable<User>>> GetUsersAsync(CancellationToken cancellationToken = default)
+    {
+        var userEntities = await _context.Users.AsNoTracking().ToListAsync(cancellationToken);
+        var users = userEntities.Select(u => User.Create(
+            u.Id,
+            u.FullName,
+            u.Email,
+            u.PhoneNumber,
+            u.PasswordHash).Value);
+        return Result.Success(users);
+    }
     
     
 }

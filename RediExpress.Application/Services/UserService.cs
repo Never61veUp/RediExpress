@@ -81,4 +81,7 @@ public class UserService : IUserService
     {
         return await _userRepository.UpdateUserAsync(user);
     }
+    
+    public async Task<Result<bool>> CheckUserByIdAsync(Guid userId, CancellationToken cancellationToken = default) =>
+        await _userRepository.TryCheckUserById(userId, cancellationToken);
 }

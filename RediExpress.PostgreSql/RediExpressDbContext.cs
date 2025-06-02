@@ -12,11 +12,13 @@ public class RediExpressDbContext(DbContextOptions<RediExpressDbContext> options
 {
     public DbSet<UserEntity> Users { get; set; }
     public DbSet<OrderEntity> Orders { get; set; }
+    public DbSet<RiderEntity> Riders { get; set; }
     
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.ApplyConfiguration(new UserConfiguration());
         modelBuilder.ApplyConfiguration(new OrderConfiguration());
+        modelBuilder.ApplyConfiguration(new RiderConfiguration());
         
         base.OnModelCreating(modelBuilder);
     }

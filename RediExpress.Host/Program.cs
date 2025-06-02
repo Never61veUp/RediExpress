@@ -34,6 +34,8 @@ builder.Services.AddHttpClient<HttpMessageInvoker, HttpClient>();
 builder.Services.AddScoped<IOrderService, OrderService>();
 builder.Services.AddScoped<IOrderRedisService, OrderRedisService>();
 builder.Services.AddScoped<IOrderRepository, OrderRepository>();
+builder.Services.AddScoped<IRiderService, RiderService>();
+builder.Services.AddScoped<IRiderRepository, RiderRepository>();
 
 builder.AddRedisClient(connectionName: "cache");
 builder.AddKeyedRedisClient(name: "orders");

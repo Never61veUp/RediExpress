@@ -82,7 +82,6 @@ public sealed class OrderController : BaseController
         var userId = User.FindFirst("userId")?.Value;
         if (userId is null || !Guid.TryParse(userId, out id))
             return false;
-
         return true;
     }
 }
