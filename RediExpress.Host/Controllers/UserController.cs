@@ -2,6 +2,7 @@
 using RediExpress.Application.Services;
 using CSharpFunctionalExtensions;
 using RediExpress.Host.Contracts;
+using Swashbuckle.AspNetCore.Annotations;
 
 namespace RediExpress.Host.Controllers;
 
@@ -17,8 +18,13 @@ public class UserController : BaseController
     {
         _userService = userService;
     }
-    
+    /// <summary>
+    /// Регистрация
+    /// </summary>
+    /// <param name="signUpRequest">Входные данные</param>
+    /// <returns></returns>
     [HttpPost("signUp")]
+    [SwaggerOperation(Summary = "Регистрация")]
     public async Task<IActionResult> SignUp([FromBody] SignUpRequest signUpRequest)
     {
         var signUpResult = await _userService.SignUpAsync(signUpRequest.firstName, signUpRequest.middleName,

@@ -10,4 +10,8 @@
       <ProjectReference Include="..\RediExpress.Core\RediExpress.Core.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <PackageReference Include="Swashbuckle.AspNetCore.Annotations" Version="8.1.2" />
+    </ItemGroup>
+
 </Project>
