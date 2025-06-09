@@ -6,6 +6,22 @@ namespace RediExpress.Host.Controllers;
 
 public class BaseController : Controller
 {
+    protected IActionResult FromResult<T>(Result<T> result)
+    {
+        return result.IsSuccess ? Ok(result.Value) : Error(result.Error);
+    }
+    protected IActionResult FromResult(Result result)
+    {
+        return result.IsSuccess ? Ok() : Error(result.Error);
+    }
+    protected bool TryGetUserId(out Guid id)
+    {
+        id = Guid.Empty;
+        var userId = User.FindFirst("userId")?.Value;
+        if (userId is null || !Guid.TryParse(userId, out id))
+            return false;
+        return true;
+    }
     protected new IActionResult Ok()
     {
         return base.Ok(Envelope.Ok());
@@ -19,14 +35,5 @@ public class BaseController : Controller
     protected IActionResult Error(string errorMessage)
     {
         return BadRequest(Envelope.Error(errorMessage));
-    }
-
-    protected IActionResult FromResult<T>(Result<T> result)
-    {
-        return result.IsSuccess ? Ok(result.Value) : Error(result.Error);
-    }
-    protected IActionResult FromResult(Result result)
-    {
-        return result.IsSuccess ? Ok() : Error(result.Error);
     }
 }
