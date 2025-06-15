@@ -1,17 +1,15 @@
-﻿# Сборка проекта
-FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
+﻿# Используем .NET 9 SDK для сборки
+FROM mcr.microsoft.com/dotnet/sdk:9.0 AS build
 WORKDIR /src
 
-# Копируем весь исходный код
 COPY . .
 
-# Переходим в проект AppHost и публикуем
 WORKDIR /src/RediExpress.AppHost
 RUN dotnet restore
 RUN dotnet publish -c Release -o /app/publish /p:UseAppHost=false
 
-# Финальный образ
-FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS final
+# Используем .NET 9 Runtime для запуска
+FROM mcr.microsoft.com/dotnet/aspnet:9.0 AS final
 WORKDIR /app
 
 COPY --from=build /app/publish .
