@@ -32,7 +32,7 @@ RUN mkdir -p /app/publish && \
     echo "📦 Publish completed" && \
     ls -R /app/publish
 
-FROM base AS final
+FROM mcr.microsoft.com/dotnet/sdk:9.0 AS final
 WORKDIR /app
 COPY --from=publish /app/publish ./
 ENTRYPOINT ["dotnet", "RediExpress.AppHost.dll"]
