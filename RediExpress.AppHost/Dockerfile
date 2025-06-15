@@ -1,10 +1,12 @@
 ﻿FROM mcr.microsoft.com/dotnet/runtime:9.0 AS base
-USER $APP_UID
 WORKDIR /app
+USER $APP_UID
 
 FROM mcr.microsoft.com/dotnet/sdk:9.0 AS build
 ARG BUILD_CONFIGURATION=Release
+ENV DOTNET_ENVIRONMENT=Production
 WORKDIR /src
+
 COPY ["RediExpress.AppHost/RediExpress.AppHost.csproj", "RediExpress.AppHost/"]
 COPY ["RediExpress.Host/RediExpress.Host.csproj", "RediExpress.Host/"]
 COPY ["RediExpress.Application/RediExpress.Application.csproj", "RediExpress.Application/"]
@@ -17,6 +19,7 @@ COPY ["RediExpress.WeatherService/RediExpress.WeatherService.csproj", "RediExpre
 COPY ["RediExpress.Redis/RediExpress.Redis.csproj", "RediExpress.Redis/"]
 COPY ["RediExpress.Contracts/RediExpress.Contracts.csproj", "RediExpress.Contracts/"]
 COPY ["RediExpress.PostgreSql.MigrationService/RediExpress.PostgreSql.MigrationService.csproj", "RediExpress.PostgreSql.MigrationService/"]
+
 RUN dotnet restore "RediExpress.AppHost/RediExpress.AppHost.csproj"
 COPY . .
 WORKDIR "/src/RediExpress.AppHost"
@@ -31,5 +34,5 @@ RUN mkdir -p /app/publish && \
 
 FROM base AS final
 WORKDIR /app
-COPY --from=publish /app/publish .
+COPY --from=publish /app/publish ./
 ENTRYPOINT ["dotnet", "RediExpress.AppHost.dll"]
