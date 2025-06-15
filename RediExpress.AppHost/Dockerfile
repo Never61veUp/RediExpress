@@ -24,7 +24,9 @@ RUN dotnet build "RediExpress.AppHost.csproj" -c $BUILD_CONFIGURATION -o /app/bu
 
 FROM build AS publish
 ARG BUILD_CONFIGURATION=Release
-RUN dotnet publish "RediExpress.AppHost.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
+RUN dotnet publish "RediExpress.AppHost.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false && \
+    echo "📦 Publish completed" && \
+    ls -R /app/publish
 
 FROM base AS final
 WORKDIR /app
