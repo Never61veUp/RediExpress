@@ -1,41 +1,19 @@
-﻿FROM mcr.microsoft.com/dotnet/runtime:9.0 AS base
-WORKDIR /app
-
-FROM mcr.microsoft.com/dotnet/sdk:9.0 AS build
-ARG BUILD_CONFIGURATION=Release
+﻿# Сборка проекта
+FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 WORKDIR /src
 
-# Copy csproj files
-COPY ["RediExpress.AppHost/RediExpress.AppHost.csproj", "RediExpress.AppHost/"]
-COPY ["RediExpress.Host/RediExpress.Host.csproj", "RediExpress.Host/"]
-COPY ["RediExpress.Application/RediExpress.Application.csproj", "RediExpress.Application/"]
-COPY ["RediExpress.Auth/RediExpress.Auth.csproj", "RediExpress.Auth/"]
-COPY ["RediExpress.Core/RediExpress.Core.csproj", "RediExpress.Core/"]
-COPY ["RediExpress.GeoService/RediExpress.GeoService.csproj", "RediExpress.GeoService/"]
-COPY ["RediExpress.EmailService/RediExpress.EmailService.csproj", "RediExpress.EmailService/"]
-COPY ["RediExpress.PostgreSql/RediExpress.PostgreSql.csproj", "RediExpress.PostgreSql/"]
-COPY ["RediExpress.WeatherService/RediExpress.WeatherService.csproj", "RediExpress.WeatherService/"]
-COPY ["RediExpress.Redis/RediExpress.Redis.csproj", "RediExpress.Redis/"]
-COPY ["RediExpress.Contracts/RediExpress.Contracts.csproj", "RediExpress.Contracts/"]
-COPY ["RediExpress.PostgreSql.MigrationService/RediExpress.PostgreSql.MigrationService.csproj", "RediExpress.PostgreSql.MigrationService/"]
-
-# Restore
-RUN dotnet restore "RediExpress.AppHost/RediExpress.AppHost.csproj"
-
-# Copy everything else
+# Копируем весь исходный код
 COPY . .
 
-# Build
-WORKDIR "/src/RediExpress.AppHost"
-RUN dotnet build "RediExpress.AppHost.csproj" -c $BUILD_CONFIGURATION -o /src/build
+# Переходим в проект AppHost и публикуем
+WORKDIR /src/RediExpress.AppHost
+RUN dotnet restore
+RUN dotnet publish -c Release -o /app/publish /p:UseAppHost=false
 
-# Publish
-FROM build AS publish
-ARG BUILD_CONFIGURATION=Release
-RUN dotnet publish "RediExpress.AppHost.csproj" -c $BUILD_CONFIGURATION -o /src/publish /p:UseAppHost=false
-
-# Final image
-FROM base AS final
+# Финальный образ
+FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS final
 WORKDIR /app
-COPY --from=publish /src/publish .
+
+COPY --from=build /app/publish .
+
 ENTRYPOINT ["dotnet", "RediExpress.AppHost.dll"]
