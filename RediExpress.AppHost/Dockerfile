@@ -30,7 +30,8 @@ ARG BUILD_CONFIGURATION=Release
 RUN mkdir -p /app/publish && \
     dotnet publish "RediExpress.AppHost.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false && \
     echo "📦 Publish completed" && \
-    ls -R /app/publish
+    ls -R /app/publish && \
+    ls -l /app/publish
 
 FROM mcr.microsoft.com/dotnet/sdk:9.0 AS final
 WORKDIR /app
